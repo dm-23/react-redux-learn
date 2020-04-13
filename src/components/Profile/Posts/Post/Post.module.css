@@ -1,0 +1,10 @@
+.item {
+    color: greenyellow;
+}
+
+.item img{
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+    content:url("https://vokrug.tv/pic/person/e/9/a/b/e9abb1b8929cede9f7058672f4b12556.jpeg");
+}

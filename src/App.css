@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+.app-wrapper {
+  display: grid;
+  grid-template-areas:
+          "h h"
+          "n c";
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 2fr 10fr;
+  grid-gap: 3px;
+}
+
+.app-wrapper-content{
+  grid-area: c;
+  background-color: lightgray;
+}
+
+

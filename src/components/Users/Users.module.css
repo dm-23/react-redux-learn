@@ -1,0 +1,20 @@
+.wrapper{
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+    grid-auto-rows: 150px;
+    grid-gap: 20px;
+}
+
+.photo{
+    width: 80px;
+    height: 80px;
+}
+
+.pages{
+    cursor: pointer;
+    padding: 5px;
+}
+
+.pages.current{
+    font-weight: bold;
+}
