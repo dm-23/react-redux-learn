@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Posts from "./Posts/Posts"
 import Profile from "./Profile"
 import {connect} from "react-redux";
@@ -7,27 +7,24 @@ import {Redirect, withRouter} from "react-router-dom";
 import withAuthRedirect from "../../Hoc/withAuthRedirect";
 import {compose} from "redux"
 
-class ProfileContainer extends React.Component {
+const ProfileContainer=props=>{
 
-    componentDidMount() {
-        debugger;
-        let profileId = this.props.match.params.profileId;
+    useEffect(()=>{
+        let profileId = props.match.params.profileId;
         if(profileId===undefined)
-            profileId=this.props.meId;
-        this.props.selectUserProfile(profileId);
-    }
+            profileId=props.meId;
+        props.selectUserProfile(profileId);
+    },[props.match.params.profileId,props.meId,props.status])
 
-    render() {
-        debugger;
-        if(!this.props.isAuth && !this.props.match.params.profileId){
-            return <Redirect to={"/login"}/>
-        }
-        return <>
-            <Profile profile={this.props.profile} status={this.props.status} updateProfileStatus={this.props.updateProfileStatus}/>
-            <Posts posts={this.props.posts} addPost={this.props.addPost}/>
-        </>
+    if(!props.isAuth && !props.match.params.profileId){
+        return <Redirect to={"/login"}/>
     }
+    return <>
+        <Profile profile={props.profile} status={props.status} updateProfileStatus={props.updateProfileStatus}/>
+        <Posts posts={props.posts} addPost={props.addPost}/>
+    </>
 }
+
 
 let mapStateToProps = (state, ownProps) => {
     return {
@@ -39,9 +36,6 @@ let mapStateToProps = (state, ownProps) => {
         isAuth:state.auth.isAuth
     }
 };
-
-
-
 
 export default compose(
     connect(mapStateToProps, {

@@ -76,8 +76,7 @@ export default compose(
         followSuccess,
         unfollowSuccess,
         setUsers,
-        setTotalCount,
-        setUserFetch
+        setTotalCount
     })
 
     )(UsersContainer)

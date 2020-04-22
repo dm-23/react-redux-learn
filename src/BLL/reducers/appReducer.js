@@ -11,7 +11,6 @@ const appReducer=(state=initData,action)=>{
 
     switch (action.type) {
         case INITIALIZED_SUCCESS:
-            debugger;
             return {
                 ...state,
                 initialized:true,
@@ -27,7 +26,6 @@ const setInitialized=()=>({type:INITIALIZED_SUCCESS});
 
 export const InitializeApp=()=>(dispatch)=>{
         dispatch(getUserAuth()).then(()=>{
-            debugger;
             dispatch(setInitialized());
         });
 }

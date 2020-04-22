@@ -2,6 +2,7 @@ import React from "react";
 import s from "./Profile.module.css"
 import Loader from "../../common/loader/loader";
 import ProfileState from "./ProfileState.js"
+
 const Profile=(props)=>{
     if(props && props.profile){
         return  <div className={s.wrapper}>

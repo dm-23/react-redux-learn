@@ -1,36 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 
-class ProfileState extends React.Component{
-    state={
-        editMode:false,
-    }
-    setEditMode(){
-        this.setState({
-            editMode:true
-        })
-    }
-    unsetEditMode(e){
-        let newStatus=e.target.value;
-        this.props.updateProfileStatus(newStatus);
-        this.setState({
-            editMode:false
-        })
-    }
-    render(){
-        return <div>
-            {!this.state.editMode &&
-                <div>
-                    <span onDoubleClick={this.setEditMode.bind(this)}>{this.props.status || 'Нет статуса'}</span>
-                </div>
-            }
-            {this.state.editMode &&
-                <div>
-                    <input autoFocus={true} onBlur={this.unsetEditMode.bind(this)} value={this.props.status} />
-                </div>
-            }
+const ProfileState=props=>{
+    const [editMode,setEditMode]=useState(false);
+    const [cstatus,setCStatus]=useState(props.status);
 
-        </div>
-    }
+    return <div>
+        {!editMode?
+        <div>
+            <span onDoubleClick={()=>setEditMode(true)}>{props.status || 'Нет статуса'}</span>
+        </div>:
+            <div>
+                <input autoFocus={true} onBlur={(e)=>{
+                    props.updateProfileStatus(e.target.value);
+                    setEditMode(false);
+                }} value={cstatus} onChange={(e)=>setCStatus(e.target.value)} />
+            </div>
+        }
+
+
+    </div>
 }
+
+
 
 export default ProfileState
