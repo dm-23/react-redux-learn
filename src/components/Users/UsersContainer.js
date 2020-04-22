@@ -84,6 +84,6 @@ export default compose(
         setTotalCount,
         toggleFetching,
         setUserFetch
-    }),
-    withAuthRedirect
+    })
+
     )(UsersContainer)

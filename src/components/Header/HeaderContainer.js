@@ -5,13 +5,7 @@ import {getUserAuth, setUserAuth} from "../../BLL/reducers/authReducer";
 
 class HeaderContainer extends React.Component
 {
-    componentDidMount() {
-        this.props.getUserAuth();
-
-
-    }
-
-    render(){
+       render(){
         return <Header id={this.props.id} login={this.props.login} email={this.props.email}/>
     }
 }
@@ -24,4 +18,4 @@ const mapStateToProps=(state)=>{
     }
 }
 
-export default connect(mapStateToProps, {getUserAuth})(HeaderContainer)
+export default connect(mapStateToProps, {})(HeaderContainer)

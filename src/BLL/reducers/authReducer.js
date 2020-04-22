@@ -26,15 +26,14 @@ const authReducer=(state=initData,action)=>{
 
 const setUserAuth=(id,login,isAuth)=>({type:SET_USER_AUTH,data:{id,login,isAuth}});
 
-export const getUserAuth=()=>{
-    return (dispatch)=>{
-        baseApiController.auth.getMe().then(data=>{
+export const getUserAuth=()=>(dispatch)=>{
+        return baseApiController.auth.getMe().then(data=>{
             if(data.resultCode===0){
                 let {id,login}=data.data;
                 dispatch(setUserAuth(id,login,true));
             }
         });
-    }
+
 }
 
 export const login=(login,password,rememberMe)=>{
