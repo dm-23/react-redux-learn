@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import Users from "./Users"
 import {
@@ -10,66 +10,62 @@ import {
 import Loader from "../../common/loader/loader";
 import baseApiController from "../../API/api";
 import {compose} from "redux";
-import withAuthRedirect from "../../Hoc/withAuthRedirect";
+import {
+    getCurrentPage,
+    getFetchUsers, getIsFetching,
+    getTotalCount,
+    getUsers,
+    getUsersOnPage
+} from "../../BLL/Selectors/userSelectors";
 
-class UsersContainer extends React.Component{
-    constructor(props){
-        super(props);
+const UsersContainer=props=>{
+    const [isFetching,setIsFetching]=useState(true);
+    const [pageNumber,setPageNumber]=useState(1);
 
-    }
-    componentDidMount() {
-        this.props.toggleFetching(true);
-        baseApiController.users.getUsers(this.props.currentPage,this.props.usersOnPage).then(data=>{
-            this.props.setUsers(data.items);
-            this.props.setTotalCount(data.totalCount);
-            this.props.toggleFetching(false)
-        });
-    }
 
-    onPageChange=(pageNumber)=>{
-        this.props.toggleFetching(true)
-        this.props.setCurrentPage(pageNumber);
-        baseApiController.users.getUsers(pageNumber,this.props.usersOnPage).then(data=>{
-            this.props.setUsers(data.items);
-            this.props.toggleFetching(false)
+    const onPageChange=(pageNumber)=>{
+        setPageNumber(pageNumber);
+        setIsFetching(true);
+        baseApiController.users.getUsers(pageNumber,props.usersOnPage).then(data=>{
+            props.setUsers(data.items);
+            setIsFetching(false)
         });
 
     }
 
-    render(){
+    useEffect(()=>{
+            baseApiController.users.getUsers(props.currentPage,props.usersOnPage).then(data=>{
+                props.setUsers(data.items);
+                props.setTotalCount(data.totalCount);
+                setIsFetching(false)
+            });
+    },[])
+    return <>
+        {
+            isFetching ? <Loader/>:
+                <Users
+                    totalCount={props.totalCount}
+                    usersOnPage={props.usersOnPage}
+                    currentPage={pageNumber}
+                    users={props.users}
+                    onPageChange={onPageChange}
+                    fetchUsers={props.fetchUsers}
+                    unfollowSuccess={props.unfollowSuccess}
+                    followSuccess={props.followSuccess}
+                />
+        }
 
-        return <>
-            {
-                this.props.isFetching ? <Loader/>:
-                    <Users
-                    totalCount={this.props.totalCount}
-                    usersOnPage={this.props.usersOnPage}
-                    currentPage={this.props.currentPage}
-                    users={this.props.users}
-                    onPageChange={this.onPageChange}
-                    setCurrentPage={this.setCurrentPage}
-                    fetchUsers={this.props.fetchUsers}
-                    unfollowSuccess={this.props.unfollowSuccess}
-                    followSuccess={this.props.followSuccess}
-                    />
-            }
-
-            </>
-
-
-    }
-
+    </>
 }
-
 
 const mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        currentPage:state.usersPage.currentPage,
-        totalCount: state.usersPage.totalCount,
-        usersOnPage:state.usersPage.usersOnPage,
-        isFetching:state.usersPage.isFetching,
-        fetchUsers:state.usersPage.fetchUsers,
+        users: getUsers(state),
+        currentPage:getCurrentPage(state),
+        totalCount: getTotalCount(state),
+        usersOnPage:getUsersOnPage(state),
+        isFetching:getIsFetching(state),
+        fetchUsers:getFetchUsers(state),
     }
 }
 
@@ -80,9 +76,7 @@ export default compose(
         followSuccess,
         unfollowSuccess,
         setUsers,
-        setCurrentPage,
         setTotalCount,
-        toggleFetching,
         setUserFetch
     })
 
