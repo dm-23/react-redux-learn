@@ -41,7 +41,8 @@ export const login=(login,password,rememberMe)=>{
         baseApiController.auth.login(login,password,rememberMe,false).then(data=>{
 
             if(data.resultCode===0){
-                dispatch(setUserAuth(data.userId,login,true));
+                debugger;
+                dispatch(setUserAuth(data.data.userId,login,true));
             }
             else{
                 let message=data.messages.length>0 ? data.messages[0]:"Ошибка входа";

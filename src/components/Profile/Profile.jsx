@@ -4,6 +4,7 @@ import Loader from "../../common/loader/loader";
 import ProfileState from "./ProfileState.js"
 
 const Profile=(props)=>{
+    debugger;
     if(props && props.profile){
         return  <div className={s.wrapper}>
             <div>

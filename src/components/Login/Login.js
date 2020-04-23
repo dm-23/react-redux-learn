@@ -21,7 +21,6 @@ const Login=(props)=>{
 }
 const maxLength10=maxLengthCreator(50);
 const LoginForm=(props)=>{
-    debugger;
     if(props.isAuth){
         return <Redirect to="/profile"/>
     }

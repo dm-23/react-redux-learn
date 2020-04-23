@@ -8,8 +8,9 @@ import withAuthRedirect from "../../Hoc/withAuthRedirect";
 import {compose} from "redux"
 
 const ProfileContainer=props=>{
-
+    debugger;
     useEffect(()=>{
+        debugger;
         let profileId = props.match.params.profileId;
         if(profileId===undefined)
             profileId=props.meId;
