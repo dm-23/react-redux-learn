@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 
 import './App.css';
 import Navbar from "./components/Navbar/Navbar.jsx";
@@ -12,35 +12,37 @@ import Loader from "./common/loader/loader";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {InitializeApp} from "./BLL/reducers/appReducer";
+import {getAppInitialize} from "./BLL/Selectors/appSelectors";
 
 
-class App extends React.Component {
-    componentDidMount(): void {
-        this.props.InitializeApp();
+const App=(props)=>{
+    useEffect(()=>{
+        props.InitializeApp();
+    },[]);
+    if(!props.initialized){
+        return <Loader/>
     }
-    render() {
-        if(!this.props.initialized){
-           return <Loader/>
-        }
-        return (
-            <div className='app-wrapper'>
-                <HeaderContainer/>
-                <HeaderContainer/>
-                <Navbar/>
-                <div className="app-wrapper-content">
+    return (
+        <div className='app-wrapper'>
+            <HeaderContainer/>
+            <HeaderContainer/>
+            <Navbar/>
+            <div className="app-wrapper-content">
 
-                    <Route path="/dialogs" render={() => <Dialogs/>}/>
-                    <Route path='/profile/:profileId?' render={() => <ProfileContainer/>}/>
-                    <Route path='/users' render={() => <UsersContainer/>}/>
-                    <Route path='/login' render={() => <Login/>}/>
-                </div>
+                <Route path="/dialogs" render={() => <Dialogs/>}/>
+                <Route path='/profile/:profileId?' render={() => <ProfileContainer/>}/>
+                <Route path='/users' render={() => <UsersContainer/>}/>
+                <Route path='/login' render={() => <Login/>}/>
             </div>
-        );
-    }
+        </div>
+    );
+
 }
 
 const mapStateToProps=(state)=>{
-    return ({initialized:state.app.initialized});
+    return {
+        initialized:getAppInitialize(state)
+    };
 }
 
 export default compose(

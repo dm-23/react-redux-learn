@@ -9,7 +9,6 @@ const InputBase=({meta,...props})=>{
         <div>
             <div>
 
-                {/*<input {...input} {...props} className={style.formControl + " " + classError }/>*/}
                 {React.Children.map(props.children, child => (
                     cloneElement(child, { className})
                 ))}

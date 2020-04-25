@@ -21,7 +21,19 @@ import {
 const UsersContainer=props=>{
     const [isFetching,setIsFetching]=useState(true);
     const [pageNumber,setPageNumber]=useState(1);
-
+    const pagesCount=Math.ceil(props.totalCount/props.usersOnPage);
+    const startPage=pageNumber-2>1?pageNumber-2:1;
+    const forCount=pagesCount>10?pagesCount-pageNumber<10?pagesCount-pageNumber:10:pagesCount;
+    let pages=[];
+    for(let i=startPage;i<=startPage+forCount;i++){
+        pages.push(i);
+    }
+    if(forCount<pagesCount){
+        pages=[...pages,"...",pagesCount]
+    }
+    if(pages[0]>1){
+        pages=[1,"...",...pages]
+    }
 
     const onPageChange=(pageNumber)=>{
         setPageNumber(pageNumber);
@@ -44,8 +56,8 @@ const UsersContainer=props=>{
         {
             isFetching ? <Loader/>:
                 <Users
-                    totalCount={props.totalCount}
-                    usersOnPage={props.usersOnPage}
+
+                    pages={pages}
                     currentPage={pageNumber}
                     users={props.users}
                     onPageChange={onPageChange}

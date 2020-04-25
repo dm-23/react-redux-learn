@@ -3,24 +3,13 @@ import s from "./Users.module.css"
 import {NavLink} from "react-router-dom";
 
 let Users=(props)=>{
-    let pagesCount=Math.ceil(props.totalCount/props.usersOnPage);
-    let pages=[];
-    let startPage=props.currentPage-2>1?props.currentPage-2:1;
-    let forCount=pagesCount>10?pagesCount-props.currentPage<10?pagesCount-props.currentPage:10:pagesCount;
-    for(let i=startPage;i<=startPage+forCount;i++){
-        pages.push(i);
-    }
-    if(forCount<pagesCount){
-        pages=[...pages,"...",pagesCount]
-    }
-    if(pages[0]>1){
-        pages=[1,"...",...pages]
-    }
+
+
     return <div >
         {<div>
             {
 
-                pages.map((p)=>{
+                props.pages.map((p)=>{
 
                     return p==='...' ? <span className={`${s.pages}`}>{p}</span>:
                         <span onClick={(e)=>props.onPageChange(p)} className={`${s.pages} ${props.currentPage===p?s.current:""}`}>{p}</span>

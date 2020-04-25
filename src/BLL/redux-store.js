@@ -21,7 +21,7 @@ let reducers=combineReducers({
 });
 
 let store=createStore(reducers,applyMiddleware(thunkMidleware));
-
+window.state=store;
 export let StoreContext=React.createContext(null);
 
 export default store;

@@ -5,20 +5,7 @@ const SELECT_USER_PROFILE=  "SELECT-USER-PROFILE";
 const SET_PROFILE_STATE="SET_PROFILE_STATE";
 
 let initData={
-    posts:[
-        {message:'Hello all',
-            id:'1',
-            likeCount:undefined
-        },
-        {message:'Is anyone here ?',
-            id:'2',
-            likeCount:'15'
-        },
-        {message:'Next will no message',
-            id:'3',
-            likeCount:'20'
-        }
-    ],
+    posts:[],
     profile: null,
     status:''
 }
@@ -61,12 +48,18 @@ const setProfileState=(status)=>({type:SET_PROFILE_STATE,status});
 
 
 export const selectUserProfile=(profileId)=>{
-    return (dispath)=>{
+    return (dispatch)=>{
         baseApiController.users.getProfile(profileId).then(data => {
-            dispath(selectProfile(data));
+            dispatch(selectProfile(data));
         });
+
+    }
+}
+
+export const getProfileStatus=(profileId)=>{
+    return dispatch=>{
         baseApiController.users.getProfileStatus(profileId).then(data=>{
-            dispath(setProfileState(data));
+            dispatch(setProfileState(data));
         })
     }
 }
