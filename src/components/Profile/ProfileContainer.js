@@ -10,8 +10,9 @@ import {
     updateProfileStatus
 } from "../../BLL/reducers/profileReducer";
 import {Redirect, withRouter} from "react-router-dom";
-import withAuthRedirect from "../../Hoc/withAuthRedirect";
 import {compose} from "redux"
+import {getPosts, getProfile, getStatus} from "../../BLL/Selectors/profileSelector";
+import {getIsAuth, getMeId} from "../../BLL/Selectors/authSelectors";
 
 const ProfileContainer=props=>{
     let [fetchData,setFetchData]=useState(false);
@@ -41,11 +42,11 @@ const ProfileContainer=props=>{
 
 let mapStateToProps = (state, ownProps) => {
     return {
-        posts: state.profilePage.posts,
-        profile: state.profilePage.profile,
-        status:state.profilePage.status,
-        meId:state.auth.id,
-        isAuth:state.auth.isAuth
+        posts: getPosts(state),
+        profile: getProfile(state),
+        status:getStatus(state),
+        meId:getMeId(state),
+        isAuth:getIsAuth(state)
     }
 };
 
