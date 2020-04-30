@@ -23,16 +23,22 @@ const App=(props)=>{
         return <Loader/>
     }
     return (
-        <div className='app-wrapper'>
-            <HeaderContainer/>
-            <HeaderContainer/>
-            <Navbar/>
+        <div className={'app-wrapper'}>
+            <div className={"app-header"}>
+                <HeaderContainer/>
+            </div>
+            <div className={'app-menu-left'}>
+                <Navbar/>
+            </div>
             <div className="app-wrapper-content">
 
                 <Route path="/dialogs" render={() => <Dialogs/>}/>
                 <Route path='/profile/:profileId?' render={() => <ProfileContainer/>}/>
                 <Route path='/users' render={() => <UsersContainer/>}/>
                 <Route path='/login' render={() => <Login/>}/>
+            </div>
+            <div className={'app-footer'}>
+                <div className={'center'}></div>
             </div>
         </div>
     );

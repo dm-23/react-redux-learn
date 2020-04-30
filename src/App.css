@@ -37,18 +37,38 @@
   }
 }
 .app-wrapper {
+  width:100%;
+  height:100%;
   display: grid;
   grid-template-areas:
           "h h"
-          "n c";
-  grid-template-rows: 60px 1fr;
+          "n c"
+          "f f";
+  grid-template-rows: 10% 79% 10%;
   grid-template-columns: 2fr 10fr;
   grid-gap: 3px;
 }
 
-.app-wrapper-content{
+.app-wrapper-content {
   grid-area: c;
   background-color: lightgray;
+  padding: 5px 5px 5px 5px;
+}
+.app-header {
+  grid-area: h;
+  background-color: lightslategray;
+  padding: 5px 5px 5px 5px;
 }
 
+.app-menu-left {
+  grid-area: n;
+  background-color: lightslategray;
+  padding: 15px 5px 5px 15px;
+}
+
+.app-footer{
+  grid-area: f;
+  background-color: #282c34;
+  padding: 5px 5px 5px 5px;
+}
 
