@@ -2,9 +2,9 @@ import React from "react";
 import s from "./Message.module.css"
 
 
-const Message=(props)=>{
+const Message=({message})=>{
     return  <div className={s.messageItem}>
-        <span>{props.message}</span>
+        <span>{message}</span>
     </div>
 }
 

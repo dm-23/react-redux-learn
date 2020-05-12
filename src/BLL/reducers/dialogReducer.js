@@ -1,4 +1,4 @@
-const ADD_MESSAGE='ADD-MESSAGE';
+const ADD_MESSAGE='reducers/dialog/ADD-MESSAGE';
 
 let initData={
     dialogs:[],
@@ -19,10 +19,6 @@ const dialogReducer=(state=initData,action)=>{
     }
 }
 
-
-
-export const    addMessage=(newMessage)=>({type:ADD_MESSAGE,newMessage});
-
-
+export const addMessage=(newMessage)=>({type:ADD_MESSAGE,newMessage});
 
 export default dialogReducer;

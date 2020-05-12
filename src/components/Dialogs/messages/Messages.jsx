@@ -2,24 +2,25 @@ import React from "react";
 import s from "./Messages.module.css";
 import Message from "./message/Message";
 import {Field, reduxForm} from "redux-form";
+import {required} from "../../../Utils/Validate/simpleValidators";
+import {Textarea} from "../../../MyComp/ValidatedComponents";
 
-const Messages=(props)=>{
-    debugger;
+const Messages=({addMessage,messages})=>{
     let btnCl=(values)=>{
-        props.addMessage(values.newMessage);
+        addMessage(values.newMessage);
     }
 
     return  <div className={s.messages}>
         {
-            props.messages.map((el)=><Message id={el.id} message={el.message}/>)
+            messages.map((el)=><Message id={el.id} message={el.message}/>)
         }
         <DialogFormRedux onSubmit={btnCl}/>
     </div>
 }
 
-const DialogForm=(props)=>{
-    return <form onSubmit={props.handleSubmit}>
-        <Field component={'textarea'} name={'newMessage'}/>
+const DialogForm=({handleSubmit})=>{
+    return <form onSubmit={handleSubmit}>
+        <Field component={Textarea} name={'newMessage'} validate={[required]}/>
         <div>
             <button >Добавить</button>
         </div>

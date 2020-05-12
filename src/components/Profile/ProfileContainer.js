@@ -14,28 +14,23 @@ import {compose} from "redux"
 import {getPosts, getProfile, getStatus} from "../../BLL/Selectors/profileSelector";
 import {getIsAuth, getMeId} from "../../BLL/Selectors/authSelectors";
 
-const ProfileContainer=props=>{
+const ProfileContainer=({match,meId,selectUserProfile,getProfileStatus,status,isAuth, addPost, posts, profile})=>{
     let [fetchData,setFetchData]=useState(false);
-    let profileId = props.match.params.profileId;
+    let profileId = match.params.profileId;
     if(profileId===undefined)
-        profileId=props.meId;
-    console.log(props)
-    useEffect(()=>{
-        console.log(`Установка профиля ${profileId}`);
-        props.selectUserProfile(profileId);
-    },[profileId]);
+        profileId=meId;
 
     useEffect(()=>{
-        console.log(`Установка статуса для ${profileId} текущий статус ${props.status}`);
-        props.getProfileStatus(profileId);
-    },[props.status,profileId])
+        selectUserProfile(profileId);
+        getProfileStatus(profileId);
+    },[status,profileId])
 
-    if(!props.isAuth && !props.match.params.profileId){
+    if(!isAuth && !match.params.profileId){
         return <Redirect to={"/login"}/>
     }
     return <>
-        <Profile editEnable={profileId===props.meId} profile={props.profile} status={props.status} updateProfileStatus={props.updateProfileStatus}/>
-        <Posts posts={props.posts} addPost={props.addPost}/>
+        <Profile editEnable={profileId===meId} profile={profile} status={status} updateProfileStatus={updateProfileStatus}/>
+        <Posts posts={posts} addPost={addPost}/>
     </>
 }
 

@@ -8,23 +8,23 @@ import {Redirect} from "react-router-dom";
 import style from "../../../src/MyComp/ValidatedComponents.module.css"
 
 
-const Login=(props)=>{
+const Login=({login,isAuth,error})=>{
     const onSubmit=(values)=>{
-        props.login(values.login, values.password,values.rememberMe);
+        login(values.login, values.password,values.rememberMe);
     }
     return (
         <div>
             <h1>Login</h1>
-            <LoginFormRedux onSubmit={onSubmit} {...props}/>
+            <LoginFormRedux onSubmit={onSubmit} isAuth={isAuth} error={error}/>
         </div>
     )
 }
 const maxLength10=maxLengthCreator(50);
-const LoginForm=(props)=>{
-    if(props.isAuth){
+const LoginForm=({isAuth,handleSubmit,error})=>{
+    if(isAuth){
         return <Redirect to="/profile"/>
     }
-    return <form onSubmit={props.handleSubmit}>
+    return <form onSubmit={handleSubmit}>
             <span>Login: </span>
             <div>
                 <Field component={Input} name="login" type="text" placeholder="Логин"
@@ -41,7 +41,7 @@ const LoginForm=(props)=>{
                 <Field component={"input"} type={"checkbox"} name={"rememberMe"}/> Запомнить
             </div>
             <div>
-                {props.error && <div className={style.formErrorShow}>{props.error}</div>}
+                {error && <div className={style.formErrorShow}>{error}</div>}
             </div>
             <button>Ok</button>
         </form>

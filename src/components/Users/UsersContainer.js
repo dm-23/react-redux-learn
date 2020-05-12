@@ -2,10 +2,9 @@ import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import Users from "./Users"
 import {
-    setCurrentPage,
     setUsers,
     setTotalCount,
-    toggleFetching, setUserFetch, followSuccess, unfollowSuccess
+     followSuccess, unfollowSuccess
 } from "../../BLL/reducers/usersReducer";
 import Loader from "../../common/loader/loader";
 import baseApiController from "../../API/api";
@@ -18,10 +17,10 @@ import {
     getUsersOnPage
 } from "../../BLL/Selectors/userSelectors";
 
-const UsersContainer=props=>{
+const UsersContainer=({totalCount,usersOnPage,setUsers,currentPage,setTotalCount,unfollowSuccess,fetchUsers,followSuccess,users})=>{
     const [isFetching,setIsFetching]=useState(true);
     const [pageNumber,setPageNumber]=useState(1);
-    const pagesCount=Math.ceil(props.totalCount/props.usersOnPage);
+    const pagesCount=Math.ceil(totalCount/usersOnPage);
     const startPage=pageNumber-2>1?pageNumber-2:1;
     const forCount=pagesCount>10?pagesCount-pageNumber<10?pagesCount-pageNumber:10:pagesCount;
     let pages=[];
@@ -38,17 +37,17 @@ const UsersContainer=props=>{
     const onPageChange=(pageNumber)=>{
         setPageNumber(pageNumber);
         setIsFetching(true);
-        baseApiController.users.getUsers(pageNumber,props.usersOnPage).then(data=>{
-            props.setUsers(data.items);
+        baseApiController.users.getUsers(pageNumber,usersOnPage).then(data=>{
+            setUsers(data.items);
             setIsFetching(false)
         });
 
     }
 
     useEffect(()=>{
-            baseApiController.users.getUsers(props.currentPage,props.usersOnPage).then(data=>{
-                props.setUsers(data.items);
-                props.setTotalCount(data.totalCount);
+            baseApiController.users.getUsers(currentPage,usersOnPage).then(data=>{
+                setUsers(data.items);
+                setTotalCount(data.totalCount);
                 setIsFetching(false)
             });
     },[])
@@ -59,11 +58,11 @@ const UsersContainer=props=>{
 
                     pages={pages}
                     currentPage={pageNumber}
-                    users={props.users}
+                    users={users}
                     onPageChange={onPageChange}
-                    fetchUsers={props.fetchUsers}
-                    unfollowSuccess={props.unfollowSuccess}
-                    followSuccess={props.followSuccess}
+                    fetchUsers={fetchUsers}
+                    unfollowSuccess={unfollowSuccess}
+                    followSuccess={followSuccess}
                 />
         }
 
@@ -81,8 +80,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-
-
 export default compose(
     connect(mapStateToProps, {
         followSuccess,
@@ -90,5 +87,4 @@ export default compose(
         setUsers,
         setTotalCount
     })
-
     )(UsersContainer)

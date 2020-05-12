@@ -6,15 +6,15 @@ import {logout} from "../../BLL/reducers/authReducer";
 
 
 
-const Header=(props)=>{
+const Header=({id,login,logout})=>{
 
     return  <header className={s.header}>
         <img/>
         <div className={s.auth}>
-            {props.id===null ?
+            {id===null ?
                 <NavLink to={"/login"}>Login</NavLink>:
-                <div><span>{props.login}</span><div>
-                    <button onClick={props.logout}>Logout</button>
+                <div><span>{login}</span><div>
+                    <button onClick={logout}>Logout</button>
                 </div></div>}
         </div>
     </header>

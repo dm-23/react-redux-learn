@@ -2,17 +2,12 @@ import React from "react";
 import {connect} from "react-redux";
 import DialogPage from "./DialogPage"
 
-const mapState=(state)=>{
+const mapStateToProps = (state) => {
     return {
-        dialog:state.dialogPage.dialogs
+        dialogs: state.dialogPage.dialogs
     }
 }
 
-const mapDispatch=(dispatch)=>{
-    return {}
-}
+const DialogContainer = connect(mapStateToProps)(DialogPage)
 
-
-const DialogContainer = connect(mapState,mapDispatch)(DialogPage)
-
-        export default DialogContainer;
+export default DialogContainer;

@@ -1,37 +1,38 @@
 import baseApiController from "../../API/api";
 
-const ADD_POST="ADD-POST";
-const SELECT_USER_PROFILE=  "SELECT-USER-PROFILE";
-const SET_PROFILE_STATE="SET_PROFILE_STATE";
+const ADD_POST = "reducers/profile/ADD-POST";
+const SELECT_USER_PROFILE = "reducers/profile/SELECT-USER-PROFILE";
+const SET_PROFILE_STATE = "reducers/profile/SET_PROFILE_STATE";
 
-let initData={
-    posts:[],
+let initData = {
+    posts: [],
     profile: null,
-    status:''
+    status: ''
 }
 
-const profileReducer=(state=initData,action)=>{
+const profileReducer = (state = initData, action) => {
 
     switch (action.type) {
         case ADD_POST:
             return {
                 ...state,
-                posts:[...state.posts,{message:action.newPost,
-                    id:'99',
-                    likeCount:'0'
+                posts: [...state.posts, {
+                    message: action.newPost,
+                    id: '99',
+                    likeCount: '0'
                 }],
-                postNewMessage:''
+                postNewMessage: ''
             };
 
         case SELECT_USER_PROFILE:
             return {
                 ...state,
-                profile:action.profile
+                profile: action.profile
             };
         case SET_PROFILE_STATE:
             return {
                 ...state,
-                status:action.status
+                status: action.status
             };
 
         default:
@@ -40,38 +41,27 @@ const profileReducer=(state=initData,action)=>{
 }
 
 
-export const addPost=(newPost)=>({type:ADD_POST,newPost});
+export const addPost = (newPost) => ({type: ADD_POST, newPost});
 
-const selectProfile=(profile)=>({type:SELECT_USER_PROFILE,profile});
+const selectProfile = (profile) => ({type: SELECT_USER_PROFILE, profile});
 
-const setProfileState=(status)=>({type:SET_PROFILE_STATE,status});
+const setProfileState = (status) => ({type: SET_PROFILE_STATE, status});
 
 
-export const selectUserProfile=(profileId)=>{
-    return (dispatch)=>{
-        baseApiController.users.getProfile(profileId).then(data => {
-            dispatch(selectProfile(data));
-        });
-
-    }
+export const selectUserProfile = (profileId) => async (dispatch) => {
+    const data = await baseApiController.users.getProfile(profileId);
+    dispatch(selectProfile(data));
 }
 
-export const getProfileStatus=(profileId)=>{
-    return dispatch=>{
-        baseApiController.users.getProfileStatus(profileId).then(data=>{
-            dispatch(setProfileState(data));
-        })
-    }
+export const getProfileStatus = (profileId) => async dispatch => {
+    const data = await baseApiController.users.getProfileStatus(profileId);
+    dispatch(setProfileState(data));
 }
 
-export const updateProfileStatus=(newStatus)=>{
-    return (dispatch)=>{
-        baseApiController.users.putStatus(newStatus).then(data => {
-            debugger;
-            if(data.resultCode===0){
-                dispatch(setProfileState(newStatus));
-            }
-        });
+export const updateProfileStatus = (newStatus) => async (dispatch) => {
+    const data = await baseApiController.users.putStatus(newStatus);
+    if (data.resultCode === 0) {
+        dispatch(setProfileState(newStatus));
     }
 }
 

@@ -7,7 +7,7 @@ import withAuthRedirect from "../../../Hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
 import {compose} from "redux";
 
-const functionState=(state)=>{
+const mapStateToProps=(state)=>{
     return {
         messages:state.dialogPage.messages,
     }
@@ -16,7 +16,7 @@ const functionState=(state)=>{
 
 
 //props has got a store
-const MessagesContainer=compose(connect(functionState, {
+const MessagesContainer=compose(connect(mapStateToProps, {
     addMessage
 }), withRouter,withAuthRedirect)(Messages);
 

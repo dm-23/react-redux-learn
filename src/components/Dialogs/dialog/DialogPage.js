@@ -2,9 +2,9 @@ import React from "react"
 import Dialog from "./Dialog"
 
 
-const DialogPage=(props)=>{
+const DialogPage=({dialogs})=>{
     return <div>
-        {props.dialog.map((el)=><Dialog userName={el.userName} userId={el.userId} userActive={el.userActive}/>)}
+        {dialogs.map((el)=><Dialog userName={el.userName} userId={el.userId} userActive={el.userActive}/>)}
         </div>
 
 }
