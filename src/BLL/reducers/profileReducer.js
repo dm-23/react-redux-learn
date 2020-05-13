@@ -49,13 +49,17 @@ const setProfileState = (status) => ({type: SET_PROFILE_STATE, status});
 
 
 export const selectUserProfile = (profileId) => async (dispatch) => {
-    const data = await baseApiController.users.getProfile(profileId);
-    dispatch(selectProfile(data));
+    if(profileId){
+        const data = await baseApiController.users.getProfile(profileId);
+        dispatch(selectProfile(data));
+    }
 }
 
 export const getProfileStatus = (profileId) => async dispatch => {
-    const data = await baseApiController.users.getProfileStatus(profileId);
-    dispatch(setProfileState(data));
+    if(profileId){
+        const data = await baseApiController.users.getProfileStatus(profileId);
+        dispatch(setProfileState(data));
+    }
 }
 
 export const updateProfileStatus = (newStatus) => async (dispatch) => {
