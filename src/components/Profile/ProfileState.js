@@ -1,24 +1,25 @@
 import React, {useState} from "react";
 
-const ProfileState=props=>{
+const ProfileState=({editEnable,status,updateProfileStatus})=>{
     const [editMode,setEditMode]=useState(false);
     const [cstatus,setCStatus]=useState("");
+    const updateStatus=()=>{
+        updateProfileStatus(cstatus);
+        setEditMode(false);
+    };
     const setEdit=()=>{
-        if(props.editEnable){
-            setCStatus(props.status);
+        if(editEnable){
+            setCStatus(status);
             setEditMode(true);
         }
     }
     return <div>
         {!editMode?
         <div>
-            <span onDoubleClick={()=>setEdit(true)}>{props.status || 'Нет статуса'}</span>
+            <span onDoubleClick={()=>setEdit(true)}>{status || 'Нет статуса'}</span>
         </div>:
             <div>
-                <input autoFocus={true} onBlur={(e)=>{
-                    props.updateProfileStatus(e.target.value);
-                    setEditMode(false);
-                }} value={cstatus} onChange={(e)=>setCStatus(e.target.value)} />
+                <input autoFocus={true} onBlur={updateStatus} value={cstatus} onChange={(e)=>setCStatus(e.target.value)} />
             </div>
         }
 
