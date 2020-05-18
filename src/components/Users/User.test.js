@@ -41,14 +41,5 @@ describe("User component testing",()=>{
         });
     });
 
-    test("Test user component has test data about User",()=>{
-        const component=create(<BrowserRouter>
-                <Provider store={store}>
-                    <User user={userData} fetchUsers={[]}/>
-                </Provider>
-        </BrowserRouter>);
-        const instance=component.root;
-        expect(instance.findByProps({children}))
-    });
 
 });
