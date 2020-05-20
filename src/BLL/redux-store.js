@@ -19,12 +19,13 @@ let reducers=combineReducers({
     app:appReducer
 
 });
+//Подключение расширения для реакт в браузер хром
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+//Наш стор
 const store = createStore(reducers, /* preloadedState, */ composeEnhancers(
     applyMiddleware(thunkMidleware)
     ));
 //let store=createStore(reducers,applyMiddleware(thunkMidleware));
 window.state=store;
-export let StoreContext=React.createContext(null);
-
+//Наш стор
 export default store;
