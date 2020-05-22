@@ -18,6 +18,12 @@ const baseApiController={
         setFollow: (userId) => axiosInstance.post(`follow/${userId}`).then(responce => responce.data),
         setUnfollow: (userId) => axiosInstance.delete(`follow/${userId}`).then(responce => responce.data),
         putStatus: (status)=>axiosInstance.put(`profile/status`,{status}).then(responce => responce.data),
+        putProfilePhoto:(file)=>{
+            const formData=new FormData();
+            formData.append("image",file);
+            return axiosInstance.put(`profile/photo`,
+                formData,{headers:{"Content-Type":"multipart/form-data"}}).then(responce => responce.data);
+        }
     },
     auth:{
         getMe:()=> axiosInstance.get('auth/me').then(responce=>responce.data),

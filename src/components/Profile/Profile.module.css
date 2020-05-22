@@ -10,4 +10,6 @@
     grid-gap: 20px;
 }
 
-
+.loadedImage {
+    max-width:200px;
+}

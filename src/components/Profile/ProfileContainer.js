@@ -6,7 +6,7 @@ import {
     addPost,
     getProfileStatus,
     selectProfile,
-    selectUserProfile,
+    selectUserProfile, updateProfileImage,
     updateProfileStatus
 } from "../../BLL/reducers/profileReducer";
 import {Redirect, withRouter} from "react-router-dom";
@@ -24,7 +24,7 @@ const ProfileContainer=(props)=>{
     return <ProfileSubContainer {...props} profileId={profileId}/>
 }
 
-const ProfileSubContainer=({meId,selectUserProfile,getProfileStatus,status, addPost, posts, profile,profileId})=>{
+const ProfileSubContainer=({meId,selectUserProfile,getProfileStatus,status, addPost, posts, profile,profileId,updateProfileImage})=>{
     let [fetchData,setFetchData]=useState(false);
 
     useEffect(()=>{
@@ -37,7 +37,7 @@ const ProfileSubContainer=({meId,selectUserProfile,getProfileStatus,status, addP
 
 
     return <>
-        <Profile editEnable={profileId===meId} profile={profile} status={status} updateProfileStatus={updateProfileStatus}/>
+        <Profile editEnable={profileId===meId} profile={profile} status={status} updateProfileStatus={updateProfileStatus} updateProfileImage={updateProfileImage}/>
         <Posts posts={posts} addPost={addPost}/>
     </>
 }
@@ -58,7 +58,8 @@ export default compose(
         addPost,
         selectUserProfile,
         getProfileStatus,
-        updateProfileStatus
+        updateProfileStatus,
+        updateProfileImage
     }),
     withRouter
 )(ProfileContainer);
