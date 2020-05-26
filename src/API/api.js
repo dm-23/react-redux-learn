@@ -18,6 +18,7 @@ const baseApiController={
         setFollow: (userId) => axiosInstance.post(`follow/${userId}`).then(responce => responce.data),
         setUnfollow: (userId) => axiosInstance.delete(`follow/${userId}`).then(responce => responce.data),
         putStatus: (status)=>axiosInstance.put(`profile/status`,{status}).then(responce => responce.data),
+        putProfile: (values)=>axiosInstance.put(`profile`,{...values}).then(responce => responce.data),
         putProfilePhoto:(file)=>{
             const formData=new FormData();
             formData.append("image",file);

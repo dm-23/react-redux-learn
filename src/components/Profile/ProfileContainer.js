@@ -6,13 +6,14 @@ import {
     addPost,
     getProfileStatus,
     selectProfile,
-    selectUserProfile, updateProfileImage,
+    selectUserProfile, setFormView, updateProfile, updateProfileImage,
     updateProfileStatus
 } from "../../BLL/reducers/profileReducer";
 import {Redirect, withRouter} from "react-router-dom";
 import {compose} from "redux"
-import {getPosts, getProfile, getStatus} from "../../BLL/Selectors/profileSelector";
+import {getFormViewMode, getPosts, getProfile, getStatus, getUpdateError} from "../../BLL/Selectors/profileSelector";
 import {getIsAuth, getMeId} from "../../BLL/Selectors/authSelectors";
+import ProfileFormView from "./ProfileFormView";
 
 const ProfileContainer=(props)=>{
     let profileId = props.match.params.profileId;
@@ -24,21 +25,29 @@ const ProfileContainer=(props)=>{
     return <ProfileSubContainer {...props} profileId={profileId}/>
 }
 
-const ProfileSubContainer=({meId,selectUserProfile,getProfileStatus,status, addPost, posts, profile,profileId,updateProfileImage})=>{
+const ProfileSubContainer=({meId,selectUserProfile,getProfileStatus,status, addPost, posts, profile,profileId,updateProfileImage,updateProfile,formViewMode,setFormView})=>{
     let [fetchData,setFetchData]=useState(false);
-
     useEffect(()=>{
         selectUserProfile(profileId);
         getProfileStatus(profileId);
     },[status,profileId]);
-
-
-
-
-
+    const onSetFormViewClick=()=>{
+        setFormView(true);
+    };
+    const onCancelButtonClick=()=>{
+        setFormView(false);
+    };
+    const onFormSubmit=(values)=>{
+        updateProfile(values);
+        //setFormView(false);
+    };
+    debugger;
     return <>
-        <Profile editEnable={profileId===meId} profile={profile} status={status} updateProfileStatus={updateProfileStatus} updateProfileImage={updateProfileImage}/>
-        <Posts posts={posts} addPost={addPost}/>
+        {formViewMode ?
+        <ProfileFormView initialValues={profile} onSubmit={onFormSubmit} onCancelButtonClick={onCancelButtonClick} profile={profile}/>
+        :<><Profile onSetFormViewClick={onSetFormViewClick} editEnable={profileId===meId} profile={profile} status={status} updateProfileStatus={updateProfileStatus} updateProfileImage={updateProfileImage}/>
+                <Posts posts={posts} addPost={addPost}/></>
+        }
     </>
 }
 
@@ -49,7 +58,8 @@ let mapStateToProps = (state, ownProps) => {
         profile: getProfile(state),
         status:getStatus(state),
         meId:getMeId(state),
-        isAuth:getIsAuth(state)
+        isAuth:getIsAuth(state),
+        formViewMode:getFormViewMode(state)
     }
 };
 
@@ -59,7 +69,9 @@ export default compose(
         selectUserProfile,
         getProfileStatus,
         updateProfileStatus,
-        updateProfileImage
+        updateProfileImage,
+        updateProfile,
+        setFormView
     }),
     withRouter
 )(ProfileContainer);

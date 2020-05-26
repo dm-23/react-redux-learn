@@ -8,6 +8,7 @@ import {createSelector} from 'reselect';
 
     const getStatusSimple=state=>state.profilePage.status;
 
+    const getFormViewModeSimple=state=>state.profilePage.formViewMode;
 //Reselect Selector
 
 export const getPosts=createSelector(getPostsSimple,posts=>posts);
@@ -15,3 +16,6 @@ export const getPosts=createSelector(getPostsSimple,posts=>posts);
 export const getProfile=createSelector(getProfileSimple, profile=>profile);
 
 export const getStatus=createSelector(getStatusSimple, status=>status);
+
+export const getFormViewMode=createSelector(getFormViewModeSimple, mode=>mode);
+

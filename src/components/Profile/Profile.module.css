@@ -5,11 +5,33 @@
 }
 .wrapper{
     display: grid;
-    grid-template-columns: 2fr 10fr;
+    grid-template:
+        "t p"
+        "c ."
+        "x ." / 2fr 10fr;
 
     grid-gap: 20px;
 }
 
 .loadedImage {
     max-width:200px;
+}
+
+.icon {
+    max-width:30px;
+    cursor: pointer;
+}
+
+.rowOne{
+    grid-area:t
+}
+.rowOneIm{
+    grid-area:p
+}
+
+.rowState{
+    grid-area:c
+}
+.rowContact{
+    grid-area:x
 }
