@@ -25,7 +25,7 @@ const ProfileContainer=(props)=>{
     return <ProfileSubContainer {...props} profileId={profileId}/>
 }
 
-const ProfileSubContainer=({meId,selectUserProfile,getProfileStatus,status, addPost, posts, profile,profileId,updateProfileImage,updateProfile,formViewMode,setFormView})=>{
+const ProfileSubContainer=({meId,selectUserProfile,getProfileStatus,status, addPost, posts, profile,profileId,updateProfileImage,updateProfile,formViewMode,setFormView,updateProfileStatus})=>{
     let [fetchData,setFetchData]=useState(false);
     useEffect(()=>{
         selectUserProfile(profileId);
