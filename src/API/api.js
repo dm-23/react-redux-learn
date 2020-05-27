@@ -26,6 +26,9 @@ const baseApiController={
                 formData,{headers:{"Content-Type":"multipart/form-data"}}).then(responce => responce.data);
         }
     },
+    security:{
+        getCaptcha:()=>axiosInstance.get('security/get-captcha-url').then(responce=>responce.data),
+    },
     auth:{
         getMe:()=> axiosInstance.get('auth/me').then(responce=>responce.data),
         login:(email,password,rememberMe,captcha)=>axiosInstance.post('auth/login',{email,password,rememberMe,captcha}).then(responce=>responce.data),

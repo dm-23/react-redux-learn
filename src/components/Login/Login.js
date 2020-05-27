@@ -8,19 +8,19 @@ import {Redirect} from "react-router-dom";
 import style from "../../../src/MyComp/ValidatedComponents.module.css"
 
 
-const Login=({login,isAuth,error})=>{
+const Login=({login,isAuth,error, captchaUrl})=>{
     const onSubmit=(values)=>{
-        login(values.login, values.password,values.rememberMe);
+        login(values.login, values.password,values.rememberMe, values.captcha);
     }
     return (
         <div>
             <h1>Login</h1>
-            <LoginFormRedux onSubmit={onSubmit} isAuth={isAuth} error={error}/>
+            <LoginFormRedux onSubmit={onSubmit} isAuth={isAuth} error={error} captchaUrl={captchaUrl}/>
         </div>
     )
 }
 const maxLength10=maxLengthCreator(50);
-const LoginForm=({isAuth,handleSubmit,error})=>{
+const LoginForm=({isAuth,handleSubmit,error,captchaUrl})=>{
     if(isAuth){
         return <Redirect to="/profile"/>
     }
@@ -40,6 +40,10 @@ const LoginForm=({isAuth,handleSubmit,error})=>{
             <div>
                 <Field component={"input"} type={"checkbox"} name={"rememberMe"}/> Запомнить
             </div>
+            {captchaUrl && <div>
+                <img src={captchaUrl}/>
+                <Field component={Input} type={"text"} name={"captcha"} placeholder={"Капча"}/>
+            </div>}
             <div>
                 {error && <div className={style.formErrorShow}>{error}</div>}
             </div>
@@ -50,7 +54,10 @@ const LoginForm=({isAuth,handleSubmit,error})=>{
 const LoginFormRedux=reduxForm({form:'loginForm'})(LoginForm);
 
 const mapStateToProps=(state)=>{
-    return ({isAuth:state.auth.isAuth})
+    return ({
+        captchaUrl:state.auth.captchaUrl,
+        isAuth:state.auth.isAuth
+    })
 }
 
 export default connect(mapStateToProps,{login})(Login)
