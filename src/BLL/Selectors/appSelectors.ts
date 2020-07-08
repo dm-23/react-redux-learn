@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
 
 //Simple selectors
-const getAppInitializeSimple=state=>{
+const getAppInitializeSimple=(state:any)=>{
     return state.app.initialized;
 };
 

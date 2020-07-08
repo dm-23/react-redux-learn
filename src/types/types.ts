@@ -31,7 +31,7 @@ export type FriendType={
     name:string
 }
 
-export type UserType={
+export type  UserType={
 
 }
 

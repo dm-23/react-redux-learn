@@ -5,9 +5,9 @@ let initData={
     initialized:false
 }
 
-type InitialStateType=typeof initData
+export type AppStateType=typeof initData
 
-const appReducer=(state=initData,action:any)=>{
+const appReducer=(state=initData,action:any):AppStateType=>{
 
     switch (action.type) {
         case INITIALIZED_SUCCESS:
