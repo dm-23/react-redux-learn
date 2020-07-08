@@ -1,3 +1,4 @@
+import {FriendType} from "../../types/types";
 
 let initData={
     friends:[
@@ -13,12 +14,13 @@ let initData={
             id:'3',
             name:'John'
         },
+    ] as Array<FriendType>
+};
 
-    ]
-}
+type InitialStateType=typeof initData
 
-const sidebarReducer=(state=initData,action)=>{
+const sidebarReducer=(state=initData,action:any):InitialStateType=>{
     return state;
-}
+};
 
 export default sidebarReducer;

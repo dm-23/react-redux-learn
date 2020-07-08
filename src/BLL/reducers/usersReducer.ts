@@ -1,6 +1,7 @@
 import React from "react";
 import baseApiController from "../../API/api";
 import {ArrayObjectsRewrite} from "../../Utils/Helpers/user-reducer-helpers";
+import {UserType} from "../../types/types";
 
 
 const FOLLOW = 'reducers/users/FOLLOW';
@@ -13,15 +14,17 @@ const SET_USER_FETCH = 'reducers/users/SET_USER_FETCH';
 
 
 let initData = {
-    users: [],
+    users: [] as Array<UserType>,
     currentPage: 1,
     totalCount: 0,
     usersOnPage: 5,
     isFetching: false,
-    fetchUsers: []
+    fetchUsers: [] as Array<number>
 }
 
-const usersReducer = (state = initData, action) => {
+type InitializedStateType=typeof initData
+
+const usersReducer = (state = initData, action:any):InitializedStateType => {
 
     switch (action.type) {
 
@@ -76,36 +79,64 @@ const usersReducer = (state = initData, action) => {
     }
 }
 
-const follow = (userId) => {
+type FollowActionType={
+    type:typeof FOLLOW
+    userId:number
+}
+const follow = (userId:number):FollowActionType => {
     return {type: FOLLOW, userId}
 }
 
-
-const unfollow = (userId) => {
+type UnfollowActionType={
+    type:typeof UNFOLLOW
+    userId:number
+}
+const unfollow = (userId:number):UnfollowActionType => {
     return {type: UNFOLLOW, userId}
 }
 
-export const setUsers = (users) => {
+type SetUsersActionType={
+    type:typeof SET_USERS
+    users:Array<UserType>
+}
+export const setUsers = (users:Array<UserType>):SetUsersActionType => {
     return {type: SET_USERS, users}
 }
 
-export const setTotalCount = (count) => {
+type SetTotalCountActionType={
+    type: typeof SET_TOTAL_COUNT
+    count:number
+}
+export const setTotalCount = (count:number):SetTotalCountActionType => {
     return {type: SET_TOTAL_COUNT, count}
 }
 
-export const setCurrentPage = (currentPage) => {
+type SetCurrentPageActionType={
+    type:typeof SET_CURRENT_PAGE,
+    currentPage:number
+}
+export const setCurrentPage = (currentPage:number):SetCurrentPageActionType => {
     return {type: SET_CURRENT_PAGE, currentPage}
 }
 
-export const toggleFetching = (isFetching) => {
+type ToggleFetchingActionType={
+    type:typeof TOGGLE_FETCHING
+    isFetching:boolean
+}
+export const toggleFetching = (isFetching:boolean):ToggleFetchingActionType => {
     return {type: TOGGLE_FETCHING, isFetching}
 }
 
-export const setUserFetch = (fetching, userId) => ({type: SET_USER_FETCH, fetching, userId});
+type SetUserFetchActionType={
+    type:typeof SET_USER_FETCH
+    fetching:boolean
+    userId:number
+}
+export const setUserFetch = (fetching:boolean, userId:number):SetUserFetchActionType => ({type: SET_USER_FETCH, fetching, userId});
 
 export default usersReducer;
 
-export const followSuccess = (userId) => async dispatch => {
+export const followSuccess = (userId:number) => async (dispatch:any) => {
     dispatch(setUserFetch(true, userId));
     const data = await baseApiController.users.setFollow(userId);
     if (data.resultCode === 0) {
@@ -114,7 +145,7 @@ export const followSuccess = (userId) => async dispatch => {
     dispatch(setUserFetch(false, userId));
 }
 
-export const unfollowSuccess = (userId) => async (dispatch) => {
+export const unfollowSuccess = (userId:number) => async (dispatch:any) => {
     dispatch(setUserFetch(true, userId));
     const data = await baseApiController.users.setUnfollow(userId)
     if (data.resultCode === 0) {

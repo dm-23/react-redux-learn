@@ -5,7 +5,9 @@ let initData={
     initialized:false
 }
 
-const appReducer=(state=initData,action)=>{
+type InitialStateType=typeof initData
+
+const appReducer=(state=initData,action:any)=>{
 
     switch (action.type) {
         case INITIALIZED_SUCCESS:
@@ -18,11 +20,13 @@ const appReducer=(state=initData,action)=>{
     }
 }
 
+type SetInitializedActionType={
+    type:typeof INITIALIZED_SUCCESS
+}
+const setInitialized=():SetInitializedActionType=>({type:INITIALIZED_SUCCESS});
 
-const setInitialized=()=>({type:INITIALIZED_SUCCESS});
 
-
-export const InitializeApp=()=>async (dispatch)=>{
+export const InitializeApp=()=>async (dispatch:any)=>{
         await dispatch(getUserAuth());
         await dispatch(setInitialized());
 
