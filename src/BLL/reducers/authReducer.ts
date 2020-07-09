@@ -1,5 +1,7 @@
 import baseApiController from "../../API/api";
-import {stopSubmit} from "redux-form"
+import {stopSubmit, FormAction} from "redux-form"
+import {ThunkAction} from "redux-thunk";
+import {AppState} from "../redux-store";
 
 const SET_USER_AUTH = "reducers/auth/SET-USER-AUTH";
 const GET_CAPTCHA = "reducers/auth/GET_CAPTCHA";
@@ -14,7 +16,9 @@ let initData = {
 
 let InitStateType=typeof initData
 
-const authReducer = (state = initData, action:any) => {
+type ActionCreatorsTypes=SetUserAuthActionType | GetCaptchaActionType
+
+const authReducer = (state = initData, action:ActionCreatorsTypes) => {
 
     switch (action.type) {
         case SET_USER_AUTH:
@@ -36,6 +40,8 @@ type SetUserAuthActionType={
         isAuth:boolean | null
     }
 }
+type ThunkCreatorType=ThunkAction<Promise<void>,AppState,unknown,ActionCreatorsTypes | FormAction>
+
 const setUserAuth = (id:number | null, login:string | null, isAuth:boolean | null):SetUserAuthActionType => ({type: SET_USER_AUTH, data: {id, login, isAuth}});
 type GetCaptchaActionType={
     type:typeof GET_CAPTCHA,
@@ -45,7 +51,7 @@ type GetCaptchaActionType={
 }
 const getCaptcha = (captchaUrl:string):GetCaptchaActionType => ({type: GET_CAPTCHA, data: {captchaUrl}});
 
-export const getUserAuth = () => async (dispatch:any) => {
+export const getUserAuth = ():ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.auth.getMe();
     if (data.resultCode === 0) {
         let {id, login} = data.data;
@@ -53,12 +59,12 @@ export const getUserAuth = () => async (dispatch:any) => {
     }
 }
 
-export const getCaptchaUrl=()=>async (dispatch:any)=>{
+export const getCaptchaUrl=():ThunkCreatorType=>async (dispatch)=>{
     const data = await baseApiController.security.getCaptcha();
     dispatch(getCaptcha(data.url));
 }
 
-export const login = (login:string, password:string, rememberMe:string,captcha:string | null=null ) => async (dispatch:any) => {
+export const login = (login:string, password:string, rememberMe:boolean,captcha:string | null=null ):ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.auth.login(login, password, rememberMe,captcha );
     if (data.resultCode === 0) {
         dispatch(setUserAuth(data.data.userId, login, true));
@@ -74,7 +80,7 @@ export const login = (login:string, password:string, rememberMe:string,captcha:s
 
 }
 
-export const logout = () => async (dispatch:any) => {
+export const logout = ():ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.auth.logout()
     if (data.resultCode === 0) {
         dispatch(setUserAuth(null, null, null));

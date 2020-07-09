@@ -1,14 +1,15 @@
 import {createSelector} from 'reselect';
+import {AppState} from "../redux-store";
 
 //Simple selectors
 
-    const getPostsSimple=(state)=>state.profilePage.posts;
+    const getPostsSimple=(state:AppState)=>state.profilePage.posts;
 
-    const getProfileSimple=state=>state.profilePage.profile;
+    const getProfileSimple=(state:AppState)=>state.profilePage.profile;
 
-    const getStatusSimple=state=>state.profilePage.status;
+    const getStatusSimple=(state:AppState)=>state.profilePage.status;
 
-    const getFormViewModeSimple=state=>state.profilePage.formViewMode;
+    const getFormViewModeSimple=(state:AppState)=>state.profilePage.formViewMode;
 //Reselect Selector
 
 export const getPosts=createSelector(getPostsSimple,posts=>posts);

@@ -35,3 +35,14 @@ export type  UserType={
 
 }
 
+export type DialogType={
+    id?:number
+    dialog?:string
+    userName:string
+    userId:number
+}
+
+export type MessageType={
+    id:number
+    message:string
+}

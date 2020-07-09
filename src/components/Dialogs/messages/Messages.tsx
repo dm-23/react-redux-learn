@@ -1,12 +1,17 @@
 import React from "react";
 import s from "./Messages.module.css";
 import Message from "./message/Message";
-import {Field, reduxForm} from "redux-form";
+import {Field, FormSubmitHandler, reduxForm, SubmitHandler} from "redux-form";
 import {required} from "../../../Utils/Validate/simpleValidators";
 import {Textarea} from "../../../MyComp/ValidatedComponents";
+import { PropsType } from "./MessagesContainer";
 
-const Messages=({addMessage,messages})=>{
-    let btnCl=(values)=>{
+type FormReturnType={
+    newMessage:string
+}
+
+const Messages:React.FC<PropsType>=({addMessage,messages})=>{
+    let btnCl=(values:any)=>{
         addMessage(values.newMessage);
     }
 
@@ -18,7 +23,7 @@ const Messages=({addMessage,messages})=>{
     </div>
 }
 
-const DialogForm=({handleSubmit})=>{
+const DialogForm=({handleSubmit}:any)=>{
     return <form onSubmit={handleSubmit}>
         <Field component={Textarea} name={'newMessage'} validate={[required]}/>
         <div>

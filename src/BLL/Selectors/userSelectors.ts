@@ -2,18 +2,19 @@
 //Simple selectors
 
 import {createSelector} from "reselect";
+import {AppState} from "../redux-store";
 
-const getUsersSimpleSelector= state=>state.usersPage.users;
+const getUsersSimpleSelector= (state:AppState)=>state.usersPage.users;
 
-const getCurrentPageSimpleSelector=state=>state.usersPage.currentPage;
+const getCurrentPageSimpleSelector=(state:AppState)=>state.usersPage.currentPage;
 
-const getTotalCountSimpleSelector=state=> state.usersPage.totalCount;
+const getTotalCountSimpleSelector=(state:AppState)=> state.usersPage.totalCount;
 
-const getUsersOnPageSimpleSelector=state=> state.usersPage.usersOnPage;
+const getUsersOnPageSimpleSelector=(state:AppState)=> state.usersPage.usersOnPage;
 
-const getIsFetchingSimpleSelector=state=> state.usersPage.isFetching;
+const getIsFetchingSimpleSelector=(state:AppState)=> state.usersPage.isFetching;
 
-const getFetchUsersSimpleSelector=state=> state.usersPage.fetchUsers;
+const getFetchUsersSimpleSelector=(state:AppState)=> state.usersPage.fetchUsers;
 
 //Reselect selectors
 

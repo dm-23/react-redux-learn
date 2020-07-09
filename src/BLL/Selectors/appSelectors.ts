@@ -1,7 +1,8 @@
 import {createSelector} from 'reselect'
+import {AppState} from "../redux-store";
 
 //Simple selectors
-const getAppInitializeSimple=(state:any)=>{
+const getAppInitializeSimple=(state:AppState)=>{
     return state.app.initialized;
 };
 

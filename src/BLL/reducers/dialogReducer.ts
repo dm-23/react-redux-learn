@@ -1,25 +1,21 @@
+import {DialogType, MessageType} from "../../types/types";
 const ADD_MESSAGE='reducers/dialog/ADD-MESSAGE';
 
-type Dialog={
-    id:number
-    dialog:string
-}
-type Message={
-    id:number
-    message:string
-}
-
 let initData={
-    dialogs:[] as Array<Dialog>,
-    messages:[]  as Array<Message>
+    dialogs:[] as Array<DialogType>,
+    messages:[]  as Array<MessageType>
 }
 
-const dialogReducer=(state=initData,action:any)=>{
+type InitialStateType=typeof initData
+
+type ActionCreatorsType=AddMessageType
+
+const dialogReducer=(state=initData,action:ActionCreatorsType):InitialStateType=>{
     switch (action.type) {
         case ADD_MESSAGE:
             return {
                 ...state,
-                messages: [...state.messages,{id:'99',
+                messages: [...state.messages,{id:99,
                     message:action.newMessage
                 }]
             };

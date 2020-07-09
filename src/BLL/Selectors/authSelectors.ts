@@ -1,9 +1,10 @@
 import {createSelector} from 'reselect';
+import {AppState} from "../redux-store";
 
 //Simple Selectors
-const getMeIdSimple=state=>state.auth.id;
+const getMeIdSimple=(state:AppState)=>state.auth.id;
 
-const getIsAuthSimple=state=>state.auth.isAuth;
+const getIsAuthSimple=(state:AppState)=>state.auth.isAuth;
 
 //ReselectSelectors
 
