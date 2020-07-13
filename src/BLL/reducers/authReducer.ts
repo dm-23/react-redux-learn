@@ -14,11 +14,11 @@ let initData = {
     captchaUrl:null as string | null
 }
 
-let InitStateType=typeof initData
+export type InitStateType=typeof initData
 
 type ActionCreatorsTypes=SetUserAuthActionType | GetCaptchaActionType
 
-const authReducer = (state = initData, action:ActionCreatorsTypes) => {
+const authReducer = (state:InitStateType = initData, action:ActionCreatorsTypes):InitStateType => {
 
     switch (action.type) {
         case SET_USER_AUTH:
@@ -26,7 +26,7 @@ const authReducer = (state = initData, action:ActionCreatorsTypes) => {
             return {
                 ...state,
                 ...action.data
-            };
+            } as InitStateType;
         default:
             return state;
     }

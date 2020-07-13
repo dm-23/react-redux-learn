@@ -1,7 +1,7 @@
 import React from "react";
 import s from "./Dialog.module.css"
 import {NavLink} from "react-router-dom";
-import {DialogType} from "../../../types/types";
+
 
 type PropsType={
     userId:number

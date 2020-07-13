@@ -1,12 +1,15 @@
 import React from "react";
 import s from "./Header.module.css"
 import {NavLink} from "react-router-dom";
-import {connect} from "react-redux";
-import {logout} from "../../BLL/reducers/authReducer";
+
+type PropsType={
+    id:number | null
+    login:string |null,
+    logout:()=>void
+}
 
 
-
-const Header=({id,login,logout})=>{
+const Header:React.FC<PropsType>=({id,login,logout})=>{
 
     return  <header className={s.header}>
         <img/>
@@ -20,4 +23,4 @@ const Header=({id,login,logout})=>{
     </header>
 }
 
-export default connect(null,{logout})(Header);
+export default Header

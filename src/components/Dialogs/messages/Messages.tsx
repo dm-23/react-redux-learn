@@ -1,14 +1,12 @@
 import React from "react";
 import s from "./Messages.module.css";
 import Message from "./message/Message";
-import {Field, FormSubmitHandler, reduxForm, SubmitHandler} from "redux-form";
+import {Field, reduxForm} from "redux-form";
 import {required} from "../../../Utils/Validate/simpleValidators";
 import {Textarea} from "../../../MyComp/ValidatedComponents";
 import { PropsType } from "./MessagesContainer";
 
-type FormReturnType={
-    newMessage:string
-}
+
 
 const Messages:React.FC<PropsType>=({addMessage,messages})=>{
     let btnCl=(values:any)=>{

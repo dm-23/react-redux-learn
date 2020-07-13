@@ -19,7 +19,11 @@ let initData={
 
 type InitialStateType=typeof initData
 
-const sidebarReducer=(state=initData,action:any):InitialStateType=>{
+type ActionCreatorType={
+
+}
+
+const sidebarReducer=(state=initData,action:ActionCreatorType):InitialStateType=>{
     return state;
 };
 

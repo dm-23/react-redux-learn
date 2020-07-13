@@ -2,6 +2,8 @@ import React from "react";
 import baseApiController from "../../API/api";
 import {ArrayObjectsRewrite} from "../../Utils/Helpers/user-reducer-helpers";
 import {UserType} from "../../types/types";
+import {ThunkAction} from "redux-thunk";
+import {AppState} from "../redux-store";
 
 
 const FOLLOW = 'reducers/users/FOLLOW';
@@ -24,7 +26,13 @@ let initData = {
 
 type InitializedStateType=typeof initData
 
-const usersReducer = (state = initData, action:any):InitializedStateType => {
+type ActionCreatorType=FollowActionType | UnfollowActionType | SetUsersActionType
+    | SetTotalCountActionType | SetCurrentPageActionType | ToggleFetchingActionType
+    | SetUserFetchActionType
+
+type ThunkCreatorType=ThunkAction<Promise<void>,AppState,unknown,ActionCreatorType>
+
+const usersReducer = (state = initData, action:ActionCreatorType):InitializedStateType => {
 
     switch (action.type) {
 
@@ -136,7 +144,7 @@ export const setUserFetch = (fetching:boolean, userId:number):SetUserFetchAction
 
 export default usersReducer;
 
-export const followSuccess = (userId:number) => async (dispatch:any) => {
+export const followSuccess = (userId:number):ThunkCreatorType => async (dispatch) => {
     dispatch(setUserFetch(true, userId));
     const data = await baseApiController.users.setFollow(userId);
     if (data.resultCode === 0) {
@@ -145,7 +153,7 @@ export const followSuccess = (userId:number) => async (dispatch:any) => {
     dispatch(setUserFetch(false, userId));
 }
 
-export const unfollowSuccess = (userId:number) => async (dispatch:any) => {
+export const unfollowSuccess = (userId:number):ThunkCreatorType => async (dispatch) => {
     dispatch(setUserFetch(true, userId));
     const data = await baseApiController.users.setUnfollow(userId)
     if (data.resultCode === 0) {

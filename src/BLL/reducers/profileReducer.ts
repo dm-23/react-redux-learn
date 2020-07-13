@@ -1,6 +1,8 @@
 import baseApiController from "../../API/api";
-import {stopSubmit} from "redux-form";
+import {FormAction, stopSubmit} from "redux-form";
 import {PhotoType, PostType, ProfileType} from "../../types/types";
+import {ThunkAction} from "redux-thunk";
+import {AppState} from "../redux-store";
 
 const ADD_POST = "reducers/profile/ADD-POST";
 const SELECT_USER_PROFILE = "reducers/profile/SELECT-USER-PROFILE";
@@ -18,7 +20,12 @@ let initData = {
 
 type InitializeStateType=typeof initData
 
-const profileReducer = (state = initData, action:any):InitializeStateType => {
+type ActionCreatorType=AddPostActionType | SelectProfileActionType | SetProfileStateActionType |
+    SetProfilePhotoActionType | SetProfileFormViewActionType
+
+type ThunkCreatorType=ThunkAction<Promise<void>,AppState,unknown,AddPostActionType | FormAction>
+
+const profileReducer = (state = initData, action:ActionCreatorType):InitializeStateType => {
 
     switch (action.type) {
         case ADD_POST:
@@ -88,34 +95,34 @@ type SetProfileFormViewActionType={
 const setProfileFormView = (value:boolean):SetProfileFormViewActionType => ({type: SET_PROFILE_FORM_VIEW, value});
 
 
-export const selectUserProfile = (profileId:number) => async (dispatch:any) => {
+export const selectUserProfile = (profileId:number):ThunkCreatorType => async (dispatch) => {
     if (profileId) {
         const data = await baseApiController.users.getProfile(profileId);
         dispatch(selectProfile(data));
     }
 }
 
-export const getProfileStatus = (profileId:number) => async (dispatch:any) => {
+export const getProfileStatus = (profileId:number):ThunkCreatorType => async (dispatch) => {
     if (profileId) {
         const data = await baseApiController.users.getProfileStatus(profileId);
         dispatch(setProfileState(data));
     }
 }
 
-export const updateProfileStatus = (newStatus:string) => async (dispatch:any) => {
+export const updateProfileStatus = (newStatus:string):ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.users.putStatus(newStatus);
     if (data.resultCode === 0) {
         dispatch(setProfileState(newStatus));
     }
 }
-export const updateProfileImage = (file:any) => async (dispatch:any) => {
+export const updateProfileImage = (file:any):ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.users.putProfilePhoto(file);
     if (data.resultCode === 0) {
         dispatch(setProfilePhoto(data.data.photos));
     }
 }
 
-export const updateProfile = (values:ProfileType) => async (dispatch:any) => {
+export const updateProfile = (values:ProfileType):ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.users.putProfile(values);
     if (data.resultCode === 0) {
         dispatch(selectUserProfile(values.userId));
@@ -145,7 +152,7 @@ export const updateProfile = (values:ProfileType) => async (dispatch:any) => {
     }
 }
 
-export const setFormView = (value:boolean) => (dispatch:any) => {
+export const setFormView = (value:boolean):ThunkAction<void,AppState,unknown,ActionCreatorType> => (dispatch) => {
     dispatch(setProfileFormView(value));
 }
 
