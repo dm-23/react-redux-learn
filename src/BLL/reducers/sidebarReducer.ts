@@ -1,4 +1,4 @@
-import {FriendType} from "../../types/types";
+import {ActionTypes, FriendType} from "../../types/types";
 
 let initData={
     friends:[
@@ -19,11 +19,11 @@ let initData={
 
 type InitialStateType=typeof initData
 
-type ActionCreatorType={
+const actions={}
 
-}
+type AcTypes=ActionTypes<typeof actions>
 
-const sidebarReducer=(state=initData,action:ActionCreatorType):InitialStateType=>{
+const sidebarReducer=(state=initData,action:AcTypes):InitialStateType=>{
     return state;
 };
 

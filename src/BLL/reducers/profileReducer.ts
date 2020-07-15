@@ -1,14 +1,9 @@
 import baseApiController from "../../API/api";
 import {FormAction, stopSubmit} from "redux-form";
-import {PhotoType, PostType, ProfileType} from "../../types/types";
+import {PhotoType, PostType, ProfileType, ActionTypes} from "../../types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppState} from "../redux-store";
 
-const ADD_POST = "reducers/profile/ADD-POST";
-const SELECT_USER_PROFILE = "reducers/profile/SELECT-USER-PROFILE";
-const SET_PROFILE_STATE = "reducers/profile/SET_PROFILE_STATE";
-const SET_PROFILE_PHOTO = "reducers/profile/SET_PROFILE_PHOTO";
-const SET_PROFILE_FORM_VIEW = "reducers/profile/SET_PROFILE_FORM_VIEW";
 
 let initData = {
     posts: [] as Array<PostType>,
@@ -19,16 +14,22 @@ let initData = {
 }
 
 type InitializeStateType=typeof initData
+const actions={
+    addPost:(newPost:string) => ({type: 'ADD_POST', newPost} as const),
+    selectProfile:(profile:ProfileType) => ({type: 'SELECT_USER_PROFILE', profile} as const),
+    setProfileState:(status:string) => ({type: 'SET_PROFILE_STATE', status} as const),
+    setProfilePhoto:(photos:PhotoType) => ({type: 'SET_PROFILE_PHOTO', photos} as const),
+    setProfileFormView:(value:boolean) => ({type: 'SET_PROFILE_FORM_VIEW', value} as const)
+}
 
-type ActionCreatorType=AddPostActionType | SelectProfileActionType | SetProfileStateActionType |
-    SetProfilePhotoActionType | SetProfileFormViewActionType
+type AcTypes=ActionTypes<typeof actions>
 
-type ThunkCreatorType=ThunkAction<Promise<void>,AppState,unknown,AddPostActionType | FormAction>
+type ThunkCreatorType=ThunkAction<Promise<void>,AppState,unknown,AcTypes | FormAction>
 
-const profileReducer = (state = initData, action:ActionCreatorType):InitializeStateType => {
+const profileReducer = (state = initData, action:AcTypes):InitializeStateType => {
 
     switch (action.type) {
-        case ADD_POST:
+        case 'ADD_POST':
             return {
                 ...state,
                 posts: [...state.posts as Array<PostType>,{
@@ -39,22 +40,22 @@ const profileReducer = (state = initData, action:ActionCreatorType):InitializeSt
                 postNewMessage: ''
             };
 
-        case SELECT_USER_PROFILE:
+        case 'SELECT_USER_PROFILE':
             return {
                 ...state,
                 profile: action.profile
             };
-        case SET_PROFILE_STATE:
+        case 'SET_PROFILE_STATE':
             return {
                 ...state,
                 status: action.status
             };
-        case SET_PROFILE_PHOTO:
+        case 'SET_PROFILE_PHOTO':
             return {
                 ...state,
                 profile: {...state.profile as ProfileType, photos: action.photos as PhotoType}
             }
-        case SET_PROFILE_FORM_VIEW:
+        case 'SET_PROFILE_FORM_VIEW':
             return {
                 ...state,
                 formViewMode: action.value
@@ -64,61 +65,32 @@ const profileReducer = (state = initData, action:ActionCreatorType):InitializeSt
     }
 }
 
-type AddPostActionType={
-    type: typeof ADD_POST
-    newPost:string
-}
-export const addPost = (newPost:string):AddPostActionType => ({type: ADD_POST, newPost});
-
-type SelectProfileActionType={
-    type: typeof SELECT_USER_PROFILE
-    profile:ProfileType
-}
-const selectProfile = (profile:ProfileType):SelectProfileActionType => ({type: SELECT_USER_PROFILE, profile});
-
-type SetProfileStateActionType={
-    type:typeof SET_PROFILE_STATE,
-    status:string
-}
-const setProfileState = (status:string):SetProfileStateActionType => ({type: SET_PROFILE_STATE, status});
-
-type SetProfilePhotoActionType={
-    type:typeof SET_PROFILE_PHOTO,
-    photos:PhotoType
-}
-const setProfilePhoto = (photos:PhotoType):SetProfilePhotoActionType => ({type: SET_PROFILE_PHOTO, photos});
-
-type SetProfileFormViewActionType={
-    type:typeof SET_PROFILE_FORM_VIEW,
-    value:boolean
-}
-const setProfileFormView = (value:boolean):SetProfileFormViewActionType => ({type: SET_PROFILE_FORM_VIEW, value});
 
 
 export const selectUserProfile = (profileId:number):ThunkCreatorType => async (dispatch) => {
     if (profileId) {
         const data = await baseApiController.users.getProfile(profileId);
-        dispatch(selectProfile(data));
+        dispatch(actions.selectProfile(data));
     }
 }
 
 export const getProfileStatus = (profileId:number):ThunkCreatorType => async (dispatch) => {
     if (profileId) {
         const data = await baseApiController.users.getProfileStatus(profileId);
-        dispatch(setProfileState(data));
+        dispatch(actions.setProfileState(data));
     }
 }
 
 export const updateProfileStatus = (newStatus:string):ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.users.putStatus(newStatus);
     if (data.resultCode === 0) {
-        dispatch(setProfileState(newStatus));
+        dispatch(actions.setProfileState(newStatus));
     }
 }
 export const updateProfileImage = (file:any):ThunkCreatorType => async (dispatch) => {
     const data = await baseApiController.users.putProfilePhoto(file);
     if (data.resultCode === 0) {
-        dispatch(setProfilePhoto(data.data.photos));
+        dispatch(actions.setProfilePhoto(data.data.photos));
     }
 }
 
@@ -127,7 +99,7 @@ export const updateProfile = (values:ProfileType):ThunkCreatorType => async (dis
     if (data.resultCode === 0) {
         dispatch(selectUserProfile(values.userId));
         //Все успешно, закрываем форму
-        dispatch(setProfileFormView(false));
+        dispatch(actions.setProfileFormView(false));
     } else {
         let err = data.messages;
         let parce = {_error: ''} as any;
@@ -152,8 +124,8 @@ export const updateProfile = (values:ProfileType):ThunkCreatorType => async (dis
     }
 }
 
-export const setFormView = (value:boolean):ThunkAction<void,AppState,unknown,ActionCreatorType> => (dispatch) => {
-    dispatch(setProfileFormView(value));
+export const setFormView = (value:boolean):ThunkAction<void,AppState,unknown,AcTypes> => (dispatch) => {
+    dispatch(actions.setProfileFormView(value));
 }
 
 export default profileReducer;

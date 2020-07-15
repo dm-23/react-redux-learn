@@ -27,11 +27,10 @@ const mapStateToProps=(state:AppState):MapToStateType=>{
 
 
 
-//props has got a store
-const MessagesContainer = compose<PropsType>(connect<MapToStateType, DispatchType, {}, AppState>(mapStateToProps, {
+const MessagesContainer= compose(connect<MapToStateType, DispatchType, {}, AppState>(mapStateToProps, {
     addMessage
 }), withRouter, withAuthRedirect)(Messages);
 
-
-
 export default MessagesContainer;
+
+
