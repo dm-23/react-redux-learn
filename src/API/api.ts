@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL = `https://social-network.samuraijs.com/api/1.0/`;
 const API_KEY = '65dd1f2b-5347-4797-9ae3-ccd87f6fa1d7';
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
     headers: {
@@ -13,11 +13,8 @@ const axiosInstance = axios.create({
 
 const baseApiController = {
     users: {
-        getUsers: (currentPage: number, usersOnPage: number) => axiosInstance.get(`users?page=${currentPage}&count=${usersOnPage}`).then(responce => responce.data),
         getProfile: (profileId: number) => axiosInstance.get(`profile/${profileId}`).then(responce => responce.data),
         getProfileStatus: (profileId: number) => axiosInstance.get(`profile/status/${profileId}`).then(responce => responce.data),
-        setFollow: (userId: number) => axiosInstance.post(`follow/${userId}`).then(responce => responce.data),
-        setUnfollow: (userId: number) => axiosInstance.delete(`follow/${userId}`).then(responce => responce.data),
         putStatus: (status: string) => axiosInstance.put(`profile/status`, {status}).then(responce => responce.data),
         putProfile: (values: any) => axiosInstance.put(`profile`, {...values}).then(responce => responce.data),
         putProfilePhoto: (file: any) => {
@@ -70,14 +67,7 @@ type MeResponseType = {
     }
 }
 
-enum ResultCodeEnum {
-    Success = 0,
-    Error = 1
-}
 
-enum ResultCodeWithCapchaEnum {
-    CaptchaIsNeeded = 10
-}
 
 export default baseApiController;
 

@@ -36,7 +36,11 @@ export type FriendType={
 }
 
 export type  UserType={
-
+    id:number
+    name:string
+    status?:string
+    photos:PhotoType
+    followed:boolean
 }
 
 export type DialogType={
@@ -51,4 +55,22 @@ export type MessageType={
     message:string
 }
 
+export enum ResultCodeEnum {
+    Success = 0,
+    Error = 1
+}
 
+export enum ResultCodeWithCapchaEnum {
+    CaptchaIsNeeded = 10
+}
+
+export type BaseResponseApiType<U>={
+    resultCode: U
+    messages: Array<string>
+}
+
+export type ResponseArrayApiType<T={},U=ResultCodeEnum>=BaseResponseApiType<U> & {
+    items: Array<T>
+}
+
+export type ResponseApiType<T={},U=ResultCodeEnum>={}
