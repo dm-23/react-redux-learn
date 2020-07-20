@@ -1,8 +1,8 @@
-import baseApiController from "../../API/api";
 import {FormAction, stopSubmit} from "redux-form";
 import {PhotoType, PostType, ProfileType, ActionTypes} from "../../types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppState} from "../redux-store";
+import apiProfile from "../../API/api-profile";
 
 
 let initData = {
@@ -14,7 +14,7 @@ let initData = {
 }
 
 type InitializeStateType=typeof initData
-const actions={
+export const profileActions={
     addPost:(newPost:string) => ({type: 'ADD_POST', newPost} as const),
     selectProfile:(profile:ProfileType) => ({type: 'SELECT_USER_PROFILE', profile} as const),
     setProfileState:(status:string) => ({type: 'SET_PROFILE_STATE', status} as const),
@@ -22,7 +22,7 @@ const actions={
     setProfileFormView:(value:boolean) => ({type: 'SET_PROFILE_FORM_VIEW', value} as const)
 }
 
-type AcTypes=ActionTypes<typeof actions>
+type AcTypes=ActionTypes<typeof profileActions>
 
 type ThunkCreatorType=ThunkAction<Promise<void>,AppState,unknown,AcTypes | FormAction>
 
@@ -69,37 +69,37 @@ const profileReducer = (state = initData, action:AcTypes):InitializeStateType =>
 
 export const selectUserProfile = (profileId:number):ThunkCreatorType => async (dispatch) => {
     if (profileId) {
-        const data = await baseApiController.users.getProfile(profileId);
-        dispatch(actions.selectProfile(data));
+        const data = await apiProfile.getProfile(profileId);
+        dispatch(profileActions.selectProfile(data));
     }
 }
 
 export const getProfileStatus = (profileId:number):ThunkCreatorType => async (dispatch) => {
     if (profileId) {
-        const data = await baseApiController.users.getProfileStatus(profileId);
-        dispatch(actions.setProfileState(data));
+        const data = await apiProfile.getProfileStatus(profileId);
+        dispatch(profileActions.setProfileState(data));
     }
 }
 
 export const updateProfileStatus = (newStatus:string):ThunkCreatorType => async (dispatch) => {
-    const data = await baseApiController.users.putStatus(newStatus);
+    const data = await apiProfile.putStatus(newStatus);
     if (data.resultCode === 0) {
-        dispatch(actions.setProfileState(newStatus));
+        dispatch(profileActions.setProfileState(newStatus));
     }
 }
 export const updateProfileImage = (file:any):ThunkCreatorType => async (dispatch) => {
-    const data = await baseApiController.users.putProfilePhoto(file);
+    const data = await apiProfile.putProfilePhoto(file);
     if (data.resultCode === 0) {
-        dispatch(actions.setProfilePhoto(data.data.photos));
+        dispatch(profileActions.setProfilePhoto(data.data));
     }
 }
 
 export const updateProfile = (values:ProfileType):ThunkCreatorType => async (dispatch) => {
-    const data = await baseApiController.users.putProfile(values);
+    const data = await apiProfile.putProfile(values);
     if (data.resultCode === 0) {
         dispatch(selectUserProfile(values.userId));
         //Все успешно, закрываем форму
-        dispatch(actions.setProfileFormView(false));
+        dispatch(profileActions.setProfileFormView(false));
     } else {
         let err = data.messages;
         let parce = {_error: ''} as any;
@@ -125,7 +125,7 @@ export const updateProfile = (values:ProfileType):ThunkCreatorType => async (dis
 }
 
 export const setFormView = (value:boolean):ThunkAction<void,AppState,unknown,AcTypes> => (dispatch) => {
-    dispatch(actions.setProfileFormView(value));
+    dispatch(profileActions.setProfileFormView(value));
 }
 
 export default profileReducer;

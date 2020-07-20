@@ -73,4 +73,6 @@ export type ResponseArrayApiType<T={},U=ResultCodeEnum>=BaseResponseApiType<U> &
     items: Array<T>
 }
 
-export type ResponseApiType<T={},U=ResultCodeEnum>={}
+export type ResponseApiType<T={},U=ResultCodeEnum>=BaseResponseApiType<U> & {
+    data:T
+}

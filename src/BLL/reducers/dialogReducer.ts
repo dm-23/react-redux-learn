@@ -6,12 +6,13 @@ let initData={
 }
 
 type InitialStateType=typeof initData
-const actions={
+
+export const dialogActions={
     addMessage:(newMessage:string)=>({type:'ADD_MESSAGE',newMessage} as const)
 }
-type AcTypes=ActionTypes<typeof actions>
+export type DialogActionTypes=ActionTypes<typeof dialogActions>
 
-const dialogReducer=(state=initData,action:AcTypes):InitialStateType=>{
+const dialogReducer=(state=initData,action:DialogActionTypes):InitialStateType=>{
     switch (action.type) {
         case 'ADD_MESSAGE':
             return {
